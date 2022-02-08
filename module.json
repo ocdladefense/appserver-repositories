@@ -1,12 +1,12 @@
 {
 	"comment": "This is a module template",
-	"name": "module-template", 
+	"name": "products", 
 	"description": "A module for building other modules.",
     "connectedApp":"default",
 	"files": [],
 	"routes": {
-        "example/route":{
-            "callback":"callbackName",
+        "getxml":{
+            "callback":"doXML",
             "content-type":"text/html"
         }
     }
