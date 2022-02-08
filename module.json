@@ -7,7 +7,7 @@
 	"routes": {
         "getxml":{
             "callback":"doXML",
-            "content-type":"application/json"
+            "content-type":"application/xml"
         }
     }
 }
