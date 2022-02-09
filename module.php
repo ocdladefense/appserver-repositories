@@ -13,6 +13,10 @@ class ProductsModule extends Module {
 
         $result = $api->query("SELECT Id, Name, Description, ClickpdxCatalog__HtmlDescription__c, IsActive FROM Product2 WHERE IsActive = true AND ClickpdxCatalog__IsOption__c = false");
 
+        $result = $result->getRecords();
+
+        //var_dump($result);
+
         $dom = new DOMDocument('1.0', 'UTF-8');
         $element = $dom->appendChild($dom->createElementNS('http://www.example.com/Docset','sphinx:docset'));
         $schema = $element->appendChild($dom->createElement('sphinx:schema'));
@@ -33,6 +37,40 @@ class ProductsModule extends Module {
         $attrThree->setAttribute('type', 'int');
         $attrThree->setAttribute('bits', '16');
         $attrThree->setAttribute('default', '1');
+
+        $count = 1;
+
+
+        foreach($result as $products)
+        {
+            $body = $element->appendChild($dom->createElement('sphinx:document'));
+            $body->setAttribute('id', $count);
+            $body->appendChild($dom->createElement('product_id', $products["Id"]));
+            $title = $body->appendChild($dom->createElement('product_name'));
+            $title->appendChild($dom->createCDATASection($products["Name"]));
+            
+            if($products["Description"] != null)
+            {
+                $item = $body->appendChild($dom->createElement('content'));
+                $item->appendChild($dom->createCDATASection($products["Description"]));
+            }
+            elseif($products["ClickpdxCatalog__HtmlDescription__c"] != null)
+            {
+                $item = $body->appendChild($dom->createElement('content'));
+                $item->appendChild($dom->createCDATASection($products["ClickpdxCatalog__HtmlDescription__c"]));
+            }
+            else
+            {
+                $item = $body->appendChild($dom->createElement('content'));
+                $item->appendChild($dom->createCDATASection(' '));
+            }
+            
+            
+
+
+            $count+=1;
+        }
+
         //var_dump($dom);
         
         //var_dump($result->getRecords());
