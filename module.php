@@ -44,7 +44,7 @@ class ProductsModule extends Module {
         foreach($result as $products)
         {
             $body = $element->appendChild($dom->createElement('sphinx:document'));
-            $body->setAttribute('id', $count);
+            $body->setAttribute('id', $count++);
             $body->appendChild($dom->createElement('product_id', $products["Id"]));
             $title = $body->appendChild($dom->createElement('product_name'));
             $title->appendChild($dom->createCDATASection($products["Name"]));
@@ -66,14 +66,15 @@ class ProductsModule extends Module {
             }
             
             
-
-
-            $count+=1;
         }
 
         //var_dump($dom);
         
         //var_dump($result->getRecords());
+
+        $dom->formatOutput = true;
+        $dom->preserveWhiteSpace = false;
+
 
 
         return $dom->saveXML();
