@@ -17,7 +17,7 @@ class ProductsModule extends Module {
 
     }
 
-    public function doXML() {
+    public function doXML($index = "ocdla_products") {
         $api = $this->loadForceApi();
 
         $result = $api->query($this->productsOnly);
@@ -120,7 +120,7 @@ class ProductsModule extends Module {
         $dom->preserveWhiteSpace = false;
 
 
-
+        // print $dom->saveXML();exit;
         return $dom->saveXML();
     }
 
