@@ -5,9 +5,13 @@
     "connectedApp":"default",
 	"files": [],
 	"routes": {
-        "getxml":{
+        "repository/%s":{
             "callback":"doXML",
             "content-type":"application/xml"
+        },
+        "repositories":{
+            "callback":"listRepositories",
+            "content-type":"text/html"
         }
     }
 }
