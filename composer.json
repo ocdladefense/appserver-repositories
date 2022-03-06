@@ -4,5 +4,7 @@
     "type": "wordpress-theme",
     "license": "MIT",
     "authors": [],
-    "require": {}
+    "require": {
+        "ramsey/uuid": "^4.2"
+    }
 }
