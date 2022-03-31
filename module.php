@@ -4,7 +4,7 @@ class ProductsModule extends Module {
 
 
     private $indexes = array(
-        "Product2" => "Product2Repository"
+        "product2" => "Product2Repository"
     );
 
 
@@ -30,7 +30,7 @@ class ProductsModule extends Module {
 
 
         $meta = $this->indexes[$source];
-
+        // var_dump($meta);exit;
         $class = new $meta;
 
         $api = $this->loadForceApi();
@@ -102,11 +102,11 @@ class ProductsModule extends Module {
 
             // Delegate processing of name and content
             // to a custom class.
-            list($name,$description) = $delegate->getNode($record);
+            list($title,$description) = $class->getNode($record);
 
             $indexName = $dom->createElement('indexName', $class->getRepository());
             $name = $dom->createElement('recordName');
-            $name->appendChild($dom->createCDATASection($name));
+            $name->appendChild($dom->createCDATASection($title));
 
 
             $content = $dom->createElement('content');
