@@ -29,7 +29,7 @@ class Product2Repository {
      * Return a title and description for populating an indexed document.
      */
     public function getNode($product) {
-
+        $title = $product["Name"];
         $standard = $product["Description"];
         $html = $product["ClickpdxCatalog__HtmlDescription__c"];
         $html = utf8_decode($html);

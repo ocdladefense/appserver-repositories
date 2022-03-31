@@ -104,7 +104,7 @@ class ProductsModule extends Module {
             // to a custom class.
             list($title,$description) = $class->getNode($record);
             if(empty($title)) continue;
-            
+
             $indexName = $dom->createElement('indexName', $class->getRepository());
             $name = $dom->createElement('recordName');
             $name->appendChild($dom->createCDATASection($title));
