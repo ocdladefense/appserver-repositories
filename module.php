@@ -3,24 +3,39 @@
 class ProductsModule extends Module {
 
 
-    // This query ignores tickets.
-    private $productsOnly = "SELECT Id, Name, Description, ClickpdxCatalog__HtmlDescription__c, IsActive FROM Product2 WHERE IsActive = True AND Event__c = null AND ClickpdxCatalog__IsOption__c = False";
+    private $indexes = array(
+        "Product2" => "Product2Repository"
+    );
+
 
     // This query targets event tickets.
     private $tickets = "SELECT Id, Name, Description, ClickpdxCatalog__HtmlDescription__c, IsActive FROM Product2 WHERE IsActive = True AND Event__c != null AND ClickpdxCatalog__IsOption__c = False";
 
-    // Name, Agenda__c, Banner_Location_Text__c
+    private $events = "SELECT Id, Name, Agenda__c, Banner_Location_Text__c FROM Event__c";
+
+    private $members = "SELECT Id, Name FROM Contact WHERE Ocdla_Current_Member_Flag__c = True";
+    
+
+
+
 
     public function __construct() {
 
         parent::__construct();
-
     }
 
-    public function doXML($index = "ocdla_products") {
+
+
+    public function doXML($source = "Product2") {
+
+
+        $meta = $this->indexes[$source];
+
+        $class = new $meta;
+
         $api = $this->loadForceApi();
 
-        $result = $api->query($this->productsOnly);
+        $result = $api->query($class->getQuery());
 
         $records = $result->getRecords();
 
@@ -40,10 +55,10 @@ class ProductsModule extends Module {
         $field_2->setAttribute('name', 'content');
 
         $field_3 = $dom->createElement('sphinx:field');
-        $field_3->setAttribute('name', 'product_name');
+        $field_3->setAttribute('name', 'recordName');
 
         $attr_1 = $dom->createElement('sphinx:attr');
-        $attr_1->setAttribute('name', 'product_id');
+        $attr_1->setAttribute('name', 'alt_id');
         $attr_1->setAttribute('type', 'string');
 
         $attr_2 = $dom->createElement('sphinx:attr');
@@ -76,34 +91,30 @@ class ProductsModule extends Module {
         $count = 1;
 
 
-        foreach($records as $product)
+        foreach($records as $record)
         {
             $doc = $dom->createElement('sphinx:document');
 
             $doc->setAttribute('id', $count);
 
-            $productId = $dom->createElement('product_id', $product["Id"]);
-            $indexName = $dom->createElement('indexName', "ocdla_products");
+            $altId = $dom->createElement('alt_id', $record["Id"]);
+           
 
-            $title = $dom->createElement('product_name');
-            $title->appendChild($dom->createCDATASection($product["Name"]));
-   
+            // Delegate processing of name and content
+            // to a custom class.
+            list($name,$description) = $delegate->getNode($record);
+
+            $indexName = $dom->createElement('indexName', $class->getRepository());
+            $name = $dom->createElement('recordName');
+            $name->appendChild($dom->createCDATASection($name));
+
+
             $content = $dom->createElement('content');
-            $standard = $product["Description"];
-            $html = $product["ClickpdxCatalog__HtmlDescription__c"];
-            $html = utf8_decode($html);
-            $html = preg_replace('/\x{00A0}+/mis', " ", $html);
-
-            $description = utf8_encode($this->getDescription($html, $standard));
-            
-            $description = str_replace("\n","",$description);
-            
-            
             $content->appendChild($dom->createCDATASection($description));
 
-            $doc->appendChild($productId);
+            $doc->appendChild($altId);
             $doc->appendChild($indexName);
-            $doc->appendChild($title);
+            $doc->appendChild($name);
             $doc->appendChild($content);
 
             $docset->appendChild($doc);
@@ -126,10 +137,5 @@ class ProductsModule extends Module {
 
 
 
-    private function getDescription($html, $text, $default = "") {
 
-
-       if(!empty($html)) return $html;
-       return !empty($text) ? $test : $default;
-    }
 }
