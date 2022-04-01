@@ -75,8 +75,8 @@ class ProductsModule extends Module {
         $field_2 = $dom->createElement('sphinx:field');
         $field_2->setAttribute('name', 'content');
 
-        $field_3 = $dom->createElement('sphinx:field');
-        $field_3->setAttribute('name', 'recordName');
+        // $field_3 = $dom->createElement('sphinx:field');
+        // $field_3->setAttribute('name', 'name');
 
         $attr_1 = $dom->createElement('sphinx:attr');
         $attr_1->setAttribute('name', 'alt_id');
@@ -99,7 +99,7 @@ class ProductsModule extends Module {
 
         $schema->appendChild($field_1);
         $schema->appendChild($field_2);
-        $schema->appendChild($field_3);
+        // $schema->appendChild($field_3);
         $schema->appendChild($atindex);
         $schema->appendChild($attr_1);
         $schema->appendChild($attr_2);
@@ -114,7 +114,7 @@ class ProductsModule extends Module {
 
             $doc->setAttribute('id', $start);
 
-            $altId = $dom->createElement('alt_id', $record["Id"]);
+            
            
 
             // Delegate processing of name and content
@@ -122,18 +122,20 @@ class ProductsModule extends Module {
             list($title,$description) = $class->getNode($record);
             if(empty($title)) continue;
 
-            $indexName = $dom->createElement('indexName', $class->getRepository());
-            $name = $dom->createElement('recordName');
-            $name->appendChild($dom->createCDATASection($title));
-
+            
+            $subject = $dom->createElement('subject');
+            $subject->appendChild($dom->createCDATASection($title));
 
             $content = $dom->createElement('content');
             $content->appendChild($dom->createCDATASection($description));
 
+            $altId = $dom->createElement('alt_id', $record["Id"]);
+            $indexName = $dom->createElement('indexName', $class->getRepository());
+
+            $doc->appendChild($subject);
+            $doc->appendChild($content);
             $doc->appendChild($altId);
             $doc->appendChild($indexName);
-            $doc->appendChild($name);
-            $doc->appendChild($content);
 
             $docset->appendChild($doc);
             $start++;
