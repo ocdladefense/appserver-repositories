@@ -23,6 +23,7 @@ class MemberRepository {
     }
 
 
+
     /**
      * @method getNode
      * 
@@ -30,25 +31,23 @@ class MemberRepository {
      */
     public function getNode($member) {
 
-        $standard = $product["Description"];
-        $html = $product["ClickpdxCatalog__HtmlDescription__c"];
-        $html = utf8_decode($html);
-        $html = preg_replace('/\x{00A0}+/mis', " ", $html);
-
-        $description = utf8_encode($this->getDescription($html, $standard));
-        
-        $description = str_replace("\n","",$description);
+        $title = $member["Name"];
+        $description = "";
 
         return array($title,$description);
     }
 
 
-    private function getDescription($html, $text, $default = "") {
+    
+    private function decode($encoded) {
+        $html = utf8_decode($encoded);
+        $html = preg_replace('/\x{00A0}+/mis', " ", $html);
 
+        $description = utf8_encode($html);
+        
+        return str_replace("\n","",$description);
+    }
 
-        if(!empty($html)) return $html;
-        return !empty($text) ? $text : $default;
-     }
 
 
 }

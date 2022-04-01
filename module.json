@@ -3,7 +3,7 @@
 	"name": "products", 
 	"description": "A module for building other modules.",
     "connectedApp":"default",
-	"files": ["Product2Repository.php"],
+	"files": ["Product2Repository.php","MemberRepository.php"],
 	"routes": {
         "repository/%s":{
             "callback":"doXML",

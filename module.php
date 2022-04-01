@@ -3,9 +3,28 @@
 class ProductsModule extends Module {
 
 
-    private $indexes = array(
-        "product2" => "Product2Repository"
-    );
+    private function getMeta($key) {
+        $indexes = array(
+            "product" => array(
+                "handler"   => "Product2Repository",
+                "start"     => 30000,
+            ),
+            "member" => array(
+                "handler"   => "MemberRepository",
+                "start"     => 20000,
+            ),
+            "car"   => array(
+                "handler"   => null,
+                "start"     => function($id){ return $id+10000; }
+            ),
+            "wiki"  => array(
+                "handler"   => null,
+                "start"     => function($id){ return $id; }
+            )
+        );
+
+        return $indexes[$key];
+    }
 
 
     // This query targets event tickets.
@@ -26,12 +45,14 @@ class ProductsModule extends Module {
 
 
 
-    public function doXML($source = "Product2") {
+    public function doXML($source = "product") {
 
 
-        $meta = $this->indexes[$source];
+        $meta = $this->getMeta($source);
         // var_dump($meta);exit;
-        $class = new $meta;
+        $classname  = $meta["handler"];
+        $start      = isset($meta["start"]) ? $meta["start"] : 1;
+        $class      = new $classname;
 
         $api = $this->loadForceApi();
 
@@ -85,17 +106,13 @@ class ProductsModule extends Module {
         $schema->appendChild($attr_3);
 
         $docset->appendChild($schema);
-        
-
-
-        $count = 1;
 
 
         foreach($records as $record)
         {
             $doc = $dom->createElement('sphinx:document');
 
-            $doc->setAttribute('id', $count);
+            $doc->setAttribute('id', $start);
 
             $altId = $dom->createElement('alt_id', $record["Id"]);
            
@@ -119,7 +136,7 @@ class ProductsModule extends Module {
             $doc->appendChild($content);
 
             $docset->appendChild($doc);
-            $count++;
+            $start++;
         }
 
         //var_dump($dom);
