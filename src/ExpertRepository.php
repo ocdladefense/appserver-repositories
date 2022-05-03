@@ -3,14 +3,14 @@
  * Get a single node (a.k.a, sphinx document) for our XML document.
  */
 
-class EventRepository {
+class ExpertRepository {
 
 
     // This query ignores tickets.
-    private $query = "SELECT Id, Name, Agenda__c, Overview__c, Banner_Location_Text__c, Venue__c FROM Event__c";
+    private $query = "SELECT Id, Name FROM Contact WHERE Ocdla_Is_Expert_Witness__c = true";
 
 
-    private $repository = "ocdla_events";
+    private $repository = "ocdla_experts";
 
 
 
@@ -29,15 +29,10 @@ class EventRepository {
      * 
      * Return a title and description for populating an indexed document.
      */
-    public function getNode($event) {
+    public function getNode($expert) {
 
-        $title = $event["Name"];
-        $agenda = $event["Agenda__c"] ?? " ";
-        $overview = $event["Overview__c"] ?? " ";
-        $banner = $event["Banner_Location_Text__c"] ?? " ";
-        $venue = $event["Venue__c"] ?? " ";
-        $description = $agenda . $overview . $banner . $venue;
-
+        $title = $expert["Name"];
+        $description = "";
 
         return array($title,$description);
     }
