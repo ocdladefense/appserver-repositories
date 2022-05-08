@@ -20,6 +20,14 @@ class ProductsModule extends Module {
             "wiki"  => array(
                 "handler"   => null,
                 "start"     => function($id){ return $id; }
+            ),
+            "expert" => array(
+                "handler"   => "ExpertRepository",
+                "start"     => 40000,
+            ),
+            "event" => array(
+                "handler"   => "EventRepository",
+                "start"     => 50000,
             )
         );
 
