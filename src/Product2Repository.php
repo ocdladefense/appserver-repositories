@@ -30,12 +30,16 @@ class Product2Repository {
      */
     public function getNode($product) {
         $title = $product["Name"];
-        $standard = $product["Description"];
-        $html = $product["ClickpdxCatalog__HtmlDescription__c"];
+        $standard = $product["Description"] ?? " ";
+        $html = $product["ClickpdxCatalog__HtmlDescription__c"] ?? " ";
         $html = utf8_decode($html);
         $html = preg_replace('/\x{00A0}+/mis', " ", $html);
 
-        $description = utf8_encode($this->getDescription($html, $standard));
+        $description = $standard . $html;
+
+        //$description = utf8_encode($this->getDescription($html, $standard));
+
+        $description =  utf8_encode($description);
         
         $description = str_replace("\n","",$description);
 

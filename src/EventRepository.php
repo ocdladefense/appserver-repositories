@@ -38,6 +38,10 @@ class EventRepository {
         $venue = $event["Venue__c"] ?? " ";
         $description = $agenda . $overview . $banner . $venue;
 
+        $description = strip_tags($description, "<br>");
+
+        $description = str_replace("<br>", " ",$description);
+
 
         return array($title,$description);
     }
