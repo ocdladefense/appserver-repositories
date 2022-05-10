@@ -7,7 +7,7 @@ class MemberRepository {
 
 
     // This query ignores tickets.
-    private $query = "SELECT Id, Name FROM Contact WHERE Ocdla_Current_Member_Flag__c = True";
+    private $query = "SELECT Id, Name, (SELECT Interest__c FROM AreasOfInterest__r) FROM Contact WHERE Ocdla_Current_Member_Flag__c = True";
 
 
     private $repository = "ocdla_members";
@@ -31,8 +31,30 @@ class MemberRepository {
      */
     public function getNode($member) {
 
+        //var_dump($member["AreasOfInterest__r"] );
+        //exit;
+
+        //phpinfo();
+        //exit;
+
+        var_dump($member);
+
         $title = $member["Name"];
-        $description = "";
+        if($member["AreasOfInterest__r"] != null)
+        {
+            //$description = implode(", ", $member["AreasOfInterest__r"]);
+            $expertise = $member["AreasOfInterest__r"];
+            foreach($expertise as $expert)
+            {
+                var_dump($expert);
+            }
+            exit;
+        }
+        else
+        {
+            $description = " ";
+        }
+       
 
         return array($title,$description);
     }
