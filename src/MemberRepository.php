@@ -31,24 +31,16 @@ class MemberRepository {
      */
     public function getNode($member) {
 
-        //var_dump($member["AreasOfInterest__r"] );
-        //exit;
-
-        //phpinfo();
-        //exit;
-
-        var_dump($member);
-
         $title = $member["Name"];
         if($member["AreasOfInterest__r"] != null)
         {
-            //$description = implode(", ", $member["AreasOfInterest__r"]);
             $expertise = $member["AreasOfInterest__r"];
-            foreach($expertise as $expert)
+            $records = $expertise["records"];
+            foreach($records as $record)
             {
-                var_dump($expert);
+                $description .= $record["Interest__c"] . " ";
             }
-            exit;
+            
         }
         else
         {

@@ -43,6 +43,10 @@ class Product2Repository {
         
         $description = str_replace("\n","",$description);
 
+        $description = strip_tags($description, "<br>");
+
+        $description = str_replace("<br>", " ",$description);
+
         return array($title,$description);
     }
 

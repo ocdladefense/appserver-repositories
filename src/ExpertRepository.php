@@ -7,7 +7,7 @@ class ExpertRepository {
 
 
     // This query ignores tickets.
-    private $query = "SELECT Id, Name FROM Contact WHERE Ocdla_Is_Expert_Witness__c = true";
+    private $query = "SELECT Id, Name, (SELECT Interest__c FROM AreasOfInterest__r) FROM Contact WHERE Ocdla_Is_Expert_Witness__c = true";
 
 
     private $repository = "ocdla_experts";
@@ -32,7 +32,20 @@ class ExpertRepository {
     public function getNode($expert) {
 
         $title = $expert["Name"];
-        $description = "";
+        if($expert["AreasOfInterest__r"] != null)
+        {
+            $expertise = $expert["AreasOfInterest__r"];
+            $records = $expertise["records"];
+            foreach($records as $record)
+            {
+                $description .= $record["Interest__c"] . " ";
+            }
+            
+        }
+        else
+        {
+            $description = " ";
+        }
 
         return array($title,$description);
     }
