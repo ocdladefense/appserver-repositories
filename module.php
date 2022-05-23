@@ -28,6 +28,10 @@ class ProductsModule extends Module {
             "event" => array(
                 "handler"   => "EventRepository",
                 "start"     => 50000,
+            ),
+            "video" => array(
+                "handler"   => "VideoRepository",
+                "start"     => 60000,
             )
         );
 
