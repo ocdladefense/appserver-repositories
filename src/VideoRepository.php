@@ -7,7 +7,7 @@ class VideoRepository {
 
 
     // This query ignores tickets.
-    private $query = "SELECT Id, Name, ResourceId__c, Event__c FROM Media__c WHERE Published__c = True";
+    private $query = "SELECT Id, Name, ResourceId__c, Event__c, Event__r.Name FROM Media__c WHERE Published__c = True";
 
 
     private $repository = "ocdla_videos";
@@ -30,11 +30,11 @@ class VideoRepository {
      * Return a title and description for populating an indexed document.
      */
     public function getNode($media) {
-
+        // var_dump($media);exit;
         $title = $media["Name"];
-        // $event = $media
+        $event = $media["Event__r"]["Name"];
 
-        $description = $title;
+        $description = $title ." ". $event;
 
         $description = strip_tags($description, "<br>");
 
