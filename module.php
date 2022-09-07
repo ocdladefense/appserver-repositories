@@ -66,7 +66,7 @@ class ProductsModule extends Module {
         $start      = isset($meta["start"]) ? $meta["start"] : 1;
         $class      = new $classname;
 
-        $api = $this->loadForceApi();
+        $api = loadapi();
 
         $result = $api->query($class->getQuery());
 
@@ -79,7 +79,7 @@ class ProductsModule extends Module {
         $docset = $dom->createElementNS('http://www.example.com/Docset','sphinx:docset');
 
         $schema = $dom->createElement('sphinx:schema');
-        
+          
 
         $field_1 = $dom->createElement('sphinx:field');
         $field_1->setAttribute('name', 'subject');
@@ -94,12 +94,12 @@ class ProductsModule extends Module {
         $attr_1->setAttribute('name', 'alt_id');
         $attr_1->setAttribute('type', 'string');
 
-        $attr_2 = $dom->createElement('sphinx:attr');
-        $attr_2->setAttribute('name', 'published');
-        $attr_2->setAttribute('type', 'timestamp');
+        // $attr_2 = $dom->createElement('sphinx:attr');
+        // $attr_2->setAttribute('name', 'published');
+        // $attr_2->setAttribute('type', 'timestamp');
 
         $atindex = $dom->createElement('sphinx:attr');
-        $atindex->setAttribute('name', 'indexName');
+        $atindex->setAttribute('name', 'indexname');
         $atindex->setAttribute('type', 'string');
 
         $attr_3 = $dom->createElement('sphinx:attr');
@@ -114,7 +114,7 @@ class ProductsModule extends Module {
         // $schema->appendChild($field_3);
         $schema->appendChild($atindex);
         $schema->appendChild($attr_1);
-        $schema->appendChild($attr_2);
+        // $schema->appendChild($attr_2);
         $schema->appendChild($attr_3);
 
         $docset->appendChild($schema);
@@ -142,7 +142,7 @@ class ProductsModule extends Module {
             $content->appendChild($dom->createCDATASection($description));
 
             $altId = $dom->createElement('alt_id', $record["Id"]);
-            $indexName = $dom->createElement('indexName', $class->getRepository());
+            $indexName = $dom->createElement('indexname', $class->getRepository());
 
             $doc->appendChild($subject);
             $doc->appendChild($content);
