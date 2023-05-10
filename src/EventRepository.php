@@ -3,7 +3,7 @@
  * Get a single node (a.k.a, sphinx document) for our XML document.
  */
 
-class EventRepository {
+class EventRepository extends Repository {
 
 
     // This query ignores tickets.
@@ -23,6 +23,9 @@ class EventRepository {
     }
 
 
+    public function __construct() {
+        parent::__construct();
+    }
 
     /**
      * @method getNode

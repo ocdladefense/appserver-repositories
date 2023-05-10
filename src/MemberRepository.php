@@ -3,7 +3,7 @@
  * Get a single node (a.k.a, sphinx document) for our XML document.
  */
 
-class MemberRepository {
+class MemberRepository extends Repository {
 
 
     // This query ignores tickets.
@@ -23,7 +23,10 @@ class MemberRepository {
     }
 
 
-
+    public function __construct() {
+        parent::__construct();
+    }
+    
     /**
      * @method getNode
      * 
