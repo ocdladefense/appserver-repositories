@@ -1,9 +1,8 @@
 {
-	"comment": "This is a module template",
-	"name": "products", 
-	"description": "A module for building other modules.",
+	"name": "repository", 
+	"description": "Repository.",
     "connectedApp":"default",
-	"files": ["Product2Repository.php","MemberRepository.php","EventRepository.php", "VideoRepository.php","ExpertRepository.php"],
+	"files": ["Repository.php","Product2Repository.php","MemberRepository.php","EventRepository.php", "VideoRepository.php","ExpertRepository.php"],
 	"routes": {
         "repository/%s":{
             "callback":"doXML",

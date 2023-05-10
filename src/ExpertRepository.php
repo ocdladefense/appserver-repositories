@@ -3,7 +3,7 @@
  * Get a single node (a.k.a, sphinx document) for our XML document.
  */
 
-class ExpertRepository {
+class ExpertRepository extends Repository {
 
 
     // This query ignores tickets.
@@ -22,6 +22,10 @@ class ExpertRepository {
         return $this->repository;
     }
 
+
+    public function __construct() {
+        parent::__construct();
+    }
 
 
     /**
